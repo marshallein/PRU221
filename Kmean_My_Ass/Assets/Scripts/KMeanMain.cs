@@ -9,12 +9,19 @@ public class KMeanMain
 
     public Dictionary<Centroid, List<Point>> recordLocation = new Dictionary<Centroid, List<Point>>();
 
+    public void AddCentroidToList(Centroid centroid)
+    {
+        centroids.Add(centroid);
+    }
+
+
     /// <summary>
     /// start to train centroid
     /// </summary>
     /// <param name="k"></param>
     public void Train(int k)
     {
+
         // add centroid equal to k
         for (int i = 0; i < k; i++)
         {

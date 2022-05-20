@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     public PointObject Point;
     public CentroidObject Centroid;
-
+    public bool randomVer = true;
     public KMeanMain kMeanMain = new KMeanMain();
 
     Dictionary<Centroid, CentroidObject> cenrtroidMap = new Dictionary<Centroid, CentroidObject>();
@@ -25,22 +25,24 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < amountToSpawn; i++)
+        if (randomVer)
         {
-            Point point = new Point { X = Random.Range(-5f, 5f), Y = Random.Range(-5f, 5f) };
-            kMeanMain.points.Add(point);
+            for (int i = 0; i < amountToSpawn; i++)
+            {
+                Point point = new Point { X = Random.Range(-5f, 5f), Y = Random.Range(-5f, 5f) };
+                kMeanMain.points.Add(point);
+            }
         }
 
         kMeanMain.Train(amountCentroidToSpawn);
 
         Visualize();
-
     }
 
 
-
-    void Visualize()
+    public void Visualize()
     {
+
 
         foreach (Point point in kMeanMain.points)
         {
@@ -75,6 +77,8 @@ public class GameManager : MonoBehaviour
 
         if (!inProgress) return;
 
+        Debug.Log(_interation);
+
         bool centroidsToCorrectposition = true;
         foreach (CentroidObject centroid in cenrtroidMap.Values)
         {
@@ -95,11 +99,14 @@ public class GameManager : MonoBehaviour
         {
             _interation++;
 
-            if (_interation > kMeanMain.recordLocation.Values.Count)
+            if (_interation >= kMeanMain.recordLocation.Values.FirstOrDefault().Count)
             {
-                ColorThePoint();
                 inProgress = false;
             }
+        }
+        else
+        {
+            ColorThePoint();
         }
     }
 
