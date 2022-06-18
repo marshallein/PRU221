@@ -32,17 +32,22 @@ public class GameManager : MonoBehaviour
                 Point point = new Point { X = Random.Range(-5f, 5f), Y = Random.Range(-5f, 5f) };
                 kMeanMain.points.Add(point);
             }
+
+            kMeanMain.Train(amountCentroidToSpawn);
+
+            Visualize();
         }
 
-        kMeanMain.Train(amountCentroidToSpawn);
 
-        Visualize();
     }
 
 
     public void Visualize()
     {
-
+        if (!randomVer)
+        {
+            kMeanMain.Train(amountCentroidToSpawn);
+        }
 
         foreach (Point point in kMeanMain.points)
         {

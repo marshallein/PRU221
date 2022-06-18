@@ -34,7 +34,7 @@ public class SpawnAtMousePos : MonoBehaviour
     void SpawnPoint(Vector3 location)
     {
         var pointObject = Instantiate<PointObject>(pointObjectPrefab, location, Quaternion.identity);
-        Point point = new Point();
+        Point point = new Point { X = pointObject.transform.position.x, Y = pointObject.transform.position.y };
         pointObject.SetPoint(point);
         gameManager.kMeanMain.points.Add(point);
     }
