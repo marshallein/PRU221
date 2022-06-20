@@ -16,11 +16,14 @@ public class GameManager : MonoBehaviour
 
     public Button leftButton;
     public Button rightButton;
+    public Button cloneButton;
 
     private RobotDirectories _robotDirectories = new RobotDirectories();
     private BasicRobotConrete _robotBuilder = new BasicRobotConrete();
-    private RobotObject robotObject;
     private Robot _robot;
+    private RobotObject robotObject;
+
+    private RobotObject robotClone;
 
     private void Start()
     {
@@ -29,7 +32,7 @@ public class GameManager : MonoBehaviour
         robotObject = Instantiate<RobotObject>(robotPrefab, spawnPoint.position, Quaternion.identity);
     }
 
-    public void SetRobotPart()
+    public void SetRobotPart(RobotObject robotObject)
     {
         robotObject.transform.Find("Head").GetComponent<SpriteRenderer>().sprite = _robot.Head;
         robotObject.transform.Find("LeftArm").GetComponent<SpriteRenderer>().sprite = _robot.LeftArm;
@@ -51,24 +54,37 @@ public class GameManager : MonoBehaviour
         _robot = _robotBuilder.AssembleRobot();
         robotObject.SetRobot(_robot);
 
-        SetRobotPart();
+        robotObject.tagname.SetText("Main Robot");
+
+        SetRobotPart(robotObject);
 
         rightButton.gameObject.SetActive(true);
         leftButton.gameObject.SetActive(true);
+        cloneButton.gameObject.SetActive(true);
     }
 
     public void OnClickChangeLeftArm()
     {
         _robot.LeftArm = LeftArm[Random.Range(0, LeftArm.Count)];
-        SetRobotPart();
+        SetRobotPart(robotObject);
     }
 
     public void OnClickChangeRightArm()
     {
         _robot.RightArm = RightArm[Random.Range(0, RightArm.Count)];
-        SetRobotPart();
+        SetRobotPart(robotObject);
     }
 
+
+    public void OnClickCloneRobot()
+    {
+        robotClone = Instantiate<RobotObject>(robotPrefab, spawnPoint.position, Quaternion.identity);
+        robotClone.SetRobot(_robot.Clone() as Robot);
+
+        robotClone.tagname.SetText("Clone Robot");
+
+        SetRobotPart(robotClone);
+    }
 
 
 }
